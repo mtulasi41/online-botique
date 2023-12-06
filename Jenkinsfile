@@ -27,24 +27,16 @@ pipeline {
                 script {
                     dir('src/adservice')  {
                       sh 'docker build -t ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID} .'
-                      sh 'trivy ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID} --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table'
+
+                      sh 'trivy image --exit-code 1 --severity CRITICAL ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
+                      sh 'trivy image -f json -o adservice.json ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
+                      
                       sh 'docker push ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID}'
                      }
                 }
             }
         }
-        stage('checkoutservice-DockerBuild') {
-            steps  {
-                script {
-                    dir('src/checkoutservice')  {
-                        
-                    sh 'docker build -t ${IMAGE_REPO}/$NAME:checkoutservice-${BUILD_ID} .'
-                    // sh 'docker tag checkoutservice:v1.$BUILD_ID ${IMAGE_REPO}/$NAME:checkoutservice-${BUILD_ID}'
-                    }
-                    sh 'docker push ${IMAGE_REPO}/$NAME:checkoutservice-${BUILD_ID}'
-                }
-            }
-        }
+              
         stage('CleanupImage') {
             steps {
                 script {
@@ -52,6 +44,13 @@ pipeline {
                 }
             }
         }
-        
     }
+  
+  post {
+    always {
+      emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} - Successful", 
+                    mimeType: 'text/html',to: "chtulasi234@gmail.com"
+    }
+  }
 }
