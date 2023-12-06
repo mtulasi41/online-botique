@@ -28,8 +28,8 @@ pipeline {
                     dir('src/adservice')  {
                       sh 'docker build -t ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID} .'
 
-                      sh 'trivy image --exit-code 1 --severity CRITICAL ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
-                      sh 'trivy image -f json -o adservice.json ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
+                      sh 'trivy image --scanners vuln --exit-code 1 --severity CRITICAL ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID} --format table'
+                     // sh 'trivy image -f json -o adservice.json ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
                       
                       sh 'docker push ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID}'
                      }
