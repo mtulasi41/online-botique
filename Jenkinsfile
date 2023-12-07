@@ -47,7 +47,7 @@ pipeline {
                       sh 'docker build -t ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} .'
 
                       sh 'trivy image ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
-                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
+                      sh 'trivy image -f json -o checkoutservice.json ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
                                             
                       sh 'docker push ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
                      }
@@ -62,7 +62,7 @@ pipeline {
                       sh 'docker build -t ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} .'
 
                       sh 'trivy image ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
-                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
+                      sh 'trivy image -f json -o currencyservice.json ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
                                             
                       sh 'docker push ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
                      }
@@ -77,9 +77,54 @@ pipeline {
                       sh 'docker build -t ${IMAGE_NAME}:emailservice-${IMAGE_TAG} .'
 
                       sh 'trivy image ${IMAGE_NAME}:emailservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
-                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                      sh 'trivy image -f json -o emailservice.json ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
                                             
                       sh 'docker push ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+
+      stage('frontend-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/frontend')  {
+                      sh 'docker build -t ${IMAGE_NAME}:frontend-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:frontend-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o frontend.json ${IMAGE_NAME}:frontend-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:frontend-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+      
+      stage('loadgenerator-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/loadgenerator')  {
+                      sh 'docker build -t ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o loadgenerator.json ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+
+      stage('paymentservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/paymetservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o paymentservice.json ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
                      }
                 }
             }
