@@ -127,22 +127,7 @@ pipeline {
             }
         }
 
-      stage('paymentservice-DockerBuild-scan-push') {
-            steps  {
-                script {
-                    dir('src/paymentservice')  {
-                      sh 'docker build -t ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} .'
-
-                      //sh 'trivy image ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
-                      //sh 'trivy image -f json -o paymentservice.json ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
-                      
-                      sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:paymentservice-${IMAGE_TAG}_${SCANDATE}.html'
-                                            
-                      sh 'docker push ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
-                     }
-                }
-            }
-        }
+     
 
       stage('productcatalogservice-DockerBuild-scan-push') {
             steps  {
@@ -189,6 +174,23 @@ pipeline {
                       sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:shippingservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:shippingservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
                       sh 'docker push ${IMAGE_NAME}:shippingservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+
+       stage('paymentservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/paymentservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} .'
+
+                      //sh 'trivy image ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      //sh 'trivy image -f json -o paymentservice.json ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
+                      
+                      sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:paymentservice-${IMAGE_TAG}_${SCANDATE}.html'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
                      }
                 }
             }
