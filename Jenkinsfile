@@ -54,6 +54,36 @@ pipeline {
                 }
             }
         }
+
+      stage('currencyservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/currencyservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+
+      stage('emailservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/emailservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:emailservice-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:emailservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
               
         stage('CleanupImage') {
             steps {
