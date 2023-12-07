@@ -35,7 +35,7 @@ pipeline {
 
                       //sh 'trivy image ${IMAGE_NAME}:adservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
-                      sh 'trivy image --format template "@${htmlTemplateLoc}" ${IMAGE_NAME}:adservice-${IMAGE_TAG} > /var/tmp/result_${IMAGE_NAME}:adservice-${IMAGE_TAG}_${scanDate}.html'
+                      sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:adservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:adservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
                       sh 'docker push ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
                      }
