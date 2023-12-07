@@ -129,6 +129,21 @@ pipeline {
                 }
             }
         }
+
+      stage('productcatalogservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/productcatalogservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o productcatalogservice.json ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
               
         stage('CleanupImage') {
             steps {
