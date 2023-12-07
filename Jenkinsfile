@@ -8,7 +8,7 @@ pipeline {
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
             IMAGE_NAME = "${IMAGE_REPO}" + "/" + "${NAME}"
             scanDate = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
-            htmlTemplateLoc=/usr/local/share/trivy/templates/html.tpl
+            htmlTemplateLoc = "/usr/local/share/trivy/templates/html.tpl"
     }
 
     stages {
