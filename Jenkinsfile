@@ -130,7 +130,7 @@ pipeline {
       stage('paymentservice-DockerBuild-scan-push') {
             steps  {
                 script {
-                    dir('src/paymetservice')  {
+                    dir('src/paymentservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} .'
 
                       //sh 'trivy image ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
@@ -204,10 +204,15 @@ pipeline {
     }
   
   post {
-    always {
-      emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
-                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} - Successful", 
+        failure {
+            emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
                     mimeType: 'text/html',to: "chtulasi234@gmail.com"
+            }
+         success {
+               emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
+                    mimeType: 'text/html',to: "chtulasi234@gmail.com"
+          }      
     }
-  }
 }
