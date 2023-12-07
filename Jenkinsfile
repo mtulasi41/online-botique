@@ -3,7 +3,10 @@ pipeline {
   
     environment {
             NAME = "online-botique"
+            RELEASE = "1.0.0"
             IMAGE_REPO = "chtulasi"
+            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+            IMAGE_NAME = "${IMAGE_REPO}" + "/" + "${NAME}"
     }
 
     stages {
@@ -26,12 +29,27 @@ pipeline {
             steps  {
                 script {
                     dir('src/adservice')  {
-                      sh 'docker build -t ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID} .'
+                      sh 'docker build -t ${IMAGE_NAME}:adservice-${IMAGE_TAG} .'
 
-                      sh 'trivy image ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
-                      sh 'trivy image -f json -o adservice.json ${IMAGE_REPO}/$NAME:adservice-${BUILD_ID}'
+                      sh 'trivy image ${IMAGE_NAME}:adservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
                                             
-                      sh 'docker push ${IMAGE_REPO}/${NAME}:adservice-${BUILD_ID}'
+                      sh 'docker push ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
+                     }
+                }
+            }
+        }
+
+      stage('checkoutservice-DockerBuild-scan-push') {
+            steps  {
+                script {
+                    dir('src/checkoutservice')  {
+                      sh 'docker build -t ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} .'
+
+                      sh 'trivy image ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
+                      sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
+                                            
+                      sh 'docker push ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
                      }
                 }
             }
