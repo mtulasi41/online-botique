@@ -222,16 +222,17 @@ pipeline {
 	                    echo 'Cloned repo already exists - Pulling latest changes'
 	   
 	                    dir("online-botique") {
-		                sh 'git pull'
+		                    sh 'git pull'
 	                    }
                 } else {
 	            
-	            echo 'Repo does not exists - Cloning the repo'
-	            sh 'git clone -b feature https://github.com/mtulasi41/online-botique.git'
+	                  echo 'Repo does not exists - Cloning the repo'
+      	            sh 'git clone -b feature https://github.com/mtulasi41/online-botique.git'
 	                }
             }
         }
     }
+    
 
         
     }
