@@ -206,6 +206,24 @@ pipeline {
                 }
             }
         }
+
+      stage('CleanupImage') {
+            steps {
+                script {
+                    sh 'docker rmi -f ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:frontend-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:recommendationservice-${IMAGE_TAG}'
+                    sh 'docker rmi -f ${IMAGE_NAME}:shippingservice-${IMAGE_TAG}'
+                    
+                }
+            }
+        }
       
       stage ('Clone/pull Repo') {
             steps{
@@ -226,12 +244,6 @@ pipeline {
         }
     }
 
-        stage('CleanupImage') {
-            steps {
-                script {
-                    sh 'docker rmi -f $(docker images -a -q)'
-                }
-            }
-        }
+        
     }
 }
