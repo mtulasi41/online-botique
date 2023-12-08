@@ -195,6 +195,25 @@ pipeline {
                 }
             }
         }
+      
+      stage ('Clone/pull Repo') {
+            steps{
+	            script {
+	                if (fileExists('online-botique')) {
+	  
+	                    echo 'Cloned repo already exists - Pulling latest changes'
+	   
+	                    dir("online-botique") {
+		                sh 'git pull'
+	                    }
+                } else {
+	            
+	            echo 'Repo does not exists - Cloning the repo'
+	            sh 'git clone -b feature https://github.com/mtulasi41/online-botique.git'
+	                }
+            }
+        }
+    }
 
         stage('CleanupImage') {
             steps {
