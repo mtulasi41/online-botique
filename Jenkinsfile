@@ -3,7 +3,7 @@ pipeline {
   
     environment {
             NAME = "online-botique"
-            RELEASE = "1.0.0"
+            RELEASE = "v0.1.0"
             IMAGE_REPO = "chtulasi"
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
             IMAGE_NAME = "${IMAGE_REPO}" + "/" + "${NAME}"
@@ -32,13 +32,14 @@ pipeline {
                 script {
                     dir('src/adservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:adservice-${IMAGE_TAG} .'
-
+                      
                       //sh 'trivy image ${IMAGE_NAME}:adservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o adservice.json ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
                       
                       sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:adservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:adservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
                       sh 'docker push ${IMAGE_NAME}:adservice-${IMAGE_TAG}'
+                      sh 'docker push ${IMAGE_NAME}:adservice-${RELEASE}'
                      }
                 }
             }
@@ -49,13 +50,14 @@ pipeline {
                 script {
                     dir('src/checkoutservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o checkoutservice.json ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
                       
                       sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:checkoutservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
-                      sh 'docker push ${IMAGE_NAME}:checkoutservice-${IMAGE_TAG}'
+                      sh 'docker push ${IMAGE_NAME}:checkoutservice-${RELEASE}'
                      }
                 }
             }
@@ -66,12 +68,13 @@ pipeline {
                 script {
                     dir('src/currencyservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:currencyservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o currencyservice.json ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
                       sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:currencyservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:currencyservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
-                      sh 'docker push ${IMAGE_NAME}:currencyservice-${IMAGE_TAG}'
+                      sh 'docker push ${IMAGE_NAME}:currencyservice-${RELEASE}'
                      }
                 }
             }
@@ -82,13 +85,14 @@ pipeline {
                 script {
                     dir('src/emailservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:emailservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:emailservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:emailservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o emailservice.json ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
                       
                       sh 'trivy image --format template --template "@${TEMPLATE_LOC}" ${IMAGE_NAME}:emailservice-${IMAGE_TAG} > /var/tmp/result_${NAME}:emailservice-${IMAGE_TAG}_${SCANDATE}.html'
                                             
-                      sh 'docker push ${IMAGE_NAME}:emailservice-${IMAGE_TAG}'
+                      sh 'docker push ${IMAGE_NAME}:emailservice-${RELEASE}'
                      }
                 }
             }
@@ -99,6 +103,7 @@ pipeline {
                 script {
                     dir('src/frontend')  {
                       sh 'docker build -t ${IMAGE_NAME}:frontend-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:frontend-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:frontend-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 0 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o frontend.json ${IMAGE_NAME}:frontend-${IMAGE_TAG}'
@@ -116,6 +121,7 @@ pipeline {
                 script {
                     dir('src/loadgenerator')  {
                       sh 'docker build -t ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o loadgenerator.json ${IMAGE_NAME}:loadgenerator-${IMAGE_TAG}'
@@ -134,6 +140,7 @@ pipeline {
                 script {
                     dir('src/productcatalogservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o productcatalogservice.json ${IMAGE_NAME}:productcatalogservice-${IMAGE_TAG}'
@@ -151,6 +158,7 @@ pipeline {
                 script {
                     dir('src/recommendationservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:recommendationservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:recommendationservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o recommendationservice.json ${IMAGE_NAME}:recommendationservice-${IMAGE_TAG}'
@@ -168,6 +176,7 @@ pipeline {
                 script {
                     dir('src/shippingservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:shippingservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:shippingservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o shippingservice.json ${IMAGE_NAME}:shippingservice-${IMAGE_TAG}'
@@ -184,6 +193,7 @@ pipeline {
                 script {
                     dir('src/paymentservice')  {
                       sh 'docker build -t ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} .'
+                      sh 'docker tag ${IMAGE_NAME}:adservice-${IMAGE_TAG} ${IMAGE_NAME}:checkoutservice-${RELEASE}'
 
                       //sh 'trivy image ${IMAGE_NAME}:paymentservice-${IMAGE_TAG} --no-progress --scanners vuln --exit-code 1 --severity CRITICAL --format table'
                       //sh 'trivy image -f json -o paymentservice.json ${IMAGE_NAME}:paymentservice-${IMAGE_TAG}'
