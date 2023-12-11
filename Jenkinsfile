@@ -216,10 +216,12 @@ pipeline {
 
       stage('Checkout K8S manifest SCM'){
             steps {
+              script {
 
          	withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultGitCredential', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique1/github', secretValues: [[vaultKey: 'token']]]]) { 
                 url: 'https://github.com/mtulasi41/online-botique.git',
                 branch: 'feature'
+               }
             }
         }
    }
