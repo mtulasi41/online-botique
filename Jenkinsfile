@@ -214,20 +214,8 @@ pipeline {
             }
         }
 
-      stage('Checkout K8S manifest SCM'){
-            steps {
-              script {
-
-         	withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultGitCredential', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique1/github', secretValues: [[vaultKey: 'token']]]]) { 
-                sh " url: 'https://github.com/mtulasi41/online-botique.git'",
-                sh "branch: 'feature'"
-               }
-            }
-        }
-   }
-      
-      
-    /*  stage ('Clone/pull Repo') {
+     
+   stage ('Clone/pull Repo') {
            steps{
 	            script {
 	               if (fileExists('online-botique')) {
@@ -244,10 +232,8 @@ pipeline {
 	                }
             }
         }
-    } */
-      
-    
-
+    } 
+ 
         
     }
 }
