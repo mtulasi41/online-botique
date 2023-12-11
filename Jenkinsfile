@@ -20,7 +20,7 @@ pipeline {
       
         stage('DockerLogin') {
             steps {
-                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://13.127.211.251:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
+                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
 			            sh 'docker login -u $username -p $password'
 
 		            }
@@ -213,25 +213,37 @@ pipeline {
                 }
             }
         }
+
+      stage('Checkout K8S manifest SCM'){
+            steps {
+
+         	withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultGitCredential', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique1/github', secretValues: [[vaultKey: 'token']]]]) { 
+                url: 'https://github.com/mtulasi41/online-botique.git',
+                branch: 'feature'
+            }
+        }
+   }
       
-      stage ('Clone/pull Repo') {
-            steps{
+      
+    /*  stage ('Clone/pull Repo') {
+           steps{
 	            script {
-	                if (fileExists('online-botique')) {
+	               if (fileExists('online-botique')) {
 	  
-	                    echo 'Cloned repo already exists - Pulling latest changes'
+	                   echo 'Cloned repo already exists - Pulling latest changes'
 	   
 	                    dir("online-botique") {
 		                    sh 'git pull'
-	                    }
-                } else {
+	                 }
+            } else {
 	            
 	                  echo 'Repo does not exists - Cloning the repo'
       	            sh 'git clone -b feature https://github.com/mtulasi41/online-botique.git'
 	                }
             }
         }
-    }
+    } */
+      
     
 
         
