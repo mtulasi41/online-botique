@@ -214,36 +214,49 @@ pipeline {
             }
         }
 
-     
-   stage ('Clone/pull Repo') {
-           steps{
-	            script {
-	               if (fileExists('online-botique')) {
-	  
-	                   echo 'Cloned repo already exists - Pulling latest changes'
-	   
-	                    dir("online-botique") {
-		                    sh 'git pull'
-	                 }
-            } else {
-	            
-	                  echo 'Repo does not exists - Cloning the repo'
-      	            sh 'git clone -b feature https://github.com/mtulasi41/online-botique.git'
-	                }
+     stage('Update Deployment File') 
+      steps {
+            withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique/github', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]){
+                sh '''
+                    git config user.email "mtulasi41@gmail.com"
+                    git config user.name "mtulasi41"
+                    sed -i "s/"gcr.io/google-samples/microservices-demo/emailservice.*"/${IMAGE_NAME}":adservice-"${RELEASE}/g" online-botique/release/kubernetes-manifests.yaml
+                    git add online-botique/release/kubernetes-manifests.yaml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://github.com/mtulasi41/online-botique.git HEAD:feature
+                '''
             }
         }
-    } 
-    stage('Update Manifest') {
-        steps {
-          script {
-	          dir('online-botique/release') {
-              
-	            sh 'sed -i "s/"gcr.io/google-samples/microservices-demo/emailservice.*"/${IMAGE_NAME}":adservice-"${RELEASE}/g" kubernetes-manifests.yaml'
-	            sh 'cat kubernetes-manifests.yaml'
-	          }
-          }
+    }
+  stage('Update Deployment File') 
+      steps {
+            withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique/github', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]){
+                sh '''
+                    git config user.email "mtulasi41@gmail.com"
+                    git config user.name "mtulasi41"
+                    sed -i "s/"gcr.io/google-samples/microservices-demo/emailservice.*"/${IMAGE_NAME}":adservice-"${RELEASE}/g" online-botique/release/kubernetes-manifests.yaml
+                    git add online-botique/release/kubernetes-manifests.yaml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://github.com/mtulasi41/online-botique.git HEAD:feature
+                '''
+            }
         }
     }
+stage('Update Deployment File') 
+      steps {
+            withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://3.6.94.176:8200'], vaultSecrets: [[path: 'botique/github', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]){
+                sh '''
+                    git config user.email "mtulasi41@gmail.com"
+                    git config user.name "mtulasi41"
+                    sed -i "s/"gcr.io/google-samples/microservices-demo/emailservice.*"/${IMAGE_NAME}":adservice-"${RELEASE}/g" online-botique/release/kubernetes-manifests.yaml
+                    git add online-botique/release/kubernetes-manifests.yaml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://github.com/mtulasi41/online-botique.git HEAD:feature
+                '''
+            }
+        }
+    }
+  
  
         
     }
