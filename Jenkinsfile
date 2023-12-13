@@ -20,7 +20,7 @@ pipeline {
       
         stage('DockerLogin') {
             steps {
-                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred1', vaultUrl: 'http://3.111.219.199:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
+                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://13.127.107.112:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
 			            sh 'docker login -u $username -p $password'
 
 		            }
@@ -237,7 +237,7 @@ pipeline {
           script {
 	          dir('online-botique/release') {
               
-	            sh 'echo 'image: "gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"' | sed 's%"image:gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"%image: "${IMAGE_NAME}:adservice-${RELEASE}"%' kubernetes-manifests.yaml'
+	            sh 'sed -i 's/"image: gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"/"image: ${IMAGE_NAME}:adservice-${RELEASE}"/g' kubernetes-manifests.yaml'
 	            sh 'cat kubernetes-manifests.yaml'
 	          }
           }
