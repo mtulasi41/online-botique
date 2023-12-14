@@ -233,11 +233,15 @@ pipeline {
     } 
     
     stage('Update Manifest') {
-        steps {
+      environment {
+        EMAILSERVICE = "gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"
+        DOCSERVICE = "${IMAGE_NAME}":emailservice-${RELEASE}"
+      }
+     steps {
           script {
 	          dir('online-botique/release') {
               
-	            
+	            sh 'sed -i "s/EMAILSRVICE/DOCSERVICE/g" kubernetes-manifests.yaml'
 	            sh 'cat kubernetes-manifests.yaml'
 	          }
           }
