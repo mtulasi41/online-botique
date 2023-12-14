@@ -237,7 +237,7 @@ pipeline {
           script {
 	          dir('online-botique/release') {
               
-	            sh 'sed -i 's%image: "gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"%image: "${IMAGE_NAME}:emailservice-${RELEASE}"%' kubernetes-manifests.yaml'
+	            
 	            sh 'cat kubernetes-manifests.yaml'
 	          }
           }
