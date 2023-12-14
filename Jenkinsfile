@@ -239,7 +239,7 @@ pipeline {
           script {
 	          dir('online-botique/release') {
               
-	            sh 'sed -i "s/EMAILSRVICE/DOCSERVICE/g" kubernetes-manifests.yaml'
+	            sh 'sed -i "s/EMAILSERVICE/DOCSERVICE/g" kubernetes-manifests.yaml'
 	            sh 'cat kubernetes-manifests.yaml'
 	          }
           }
