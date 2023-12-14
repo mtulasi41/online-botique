@@ -235,7 +235,7 @@ pipeline {
     stage('Update Manifest') {
       environment {
         EMAILSERVICE = "gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"
-        DOCSERVICE = "${IMAGE_NAME}":emailservice-${RELEASE}"
+        DOCSERVICE = "${IMAGE_NAME}:emailservice-${RELEASE}"
       }
      steps {
           script {
