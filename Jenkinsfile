@@ -239,12 +239,16 @@ pipeline {
               
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/emailservice:v0.8.1+${IMAGE_NAME}:emailservice-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.1+${IMAGE_NAME}:checkoutservice-${RELEASE}+g' kubernetes-manifests.yaml"
+              
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/frontend:v0.8.1+${IMAGE_NAME}:frotend-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/paymentservice:v0.8.1+${IMAGE_NAME}:paymentservice-${RELEASE}+g' kubernetes-manifests.yaml"
+              
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/productcatalogservice:v0.8.1+${IMAGE_NAME}:productcatalogservice-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/cartservice:v0.8.1+${IMAGE_NAME}:cartservice-${RELEASE}+g' kubernetes-manifests.yaml"
-              sh "sed -i 'gcr.io/google-samples/microservices-demo/loadgenerator:v0.8.1+${IMAGE_NAME}:loadgenerator-${RELEASE}+g' kubernetes-manifests.yaml"
+              
+              sh "sed -i 's+gcr.io/google-samples/microservices-demo/loadgenerator:v0.8.1+${IMAGE_NAME}:loadgenerator-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/currencyservice:v0.8.1+${IMAGE_NAME}:currencyservice-${RELEASE}+g' kubernetes-manifests.yaml"
+              
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/shippingservice:v0.8.1+${IMAGE_NAME}:shippingservice-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/adservice:v0.8.1+${IMAGE_NAME}:adservice-${RELEASE}+g' kubernetes-manifests.yaml"
                             
