@@ -22,7 +22,7 @@ pipeline {
       
         stage('DockerLogin') {
             steps {
-                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://35.154.124.179:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
+                withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://43.205.96.118:8200'], vaultSecrets: [[path: 'botique/dockerhub', secretValues: [[envVar: 'username', vaultKey: 'usrname'], [vaultKey: 'password']]]]) {
 			            sh 'docker login -u $username -p $password'
 
 		            }
@@ -239,8 +239,8 @@ pipeline {
           script {
 	          dir('online-botique/release') {
               
-	            sh 'sed -i "s/EMAILSERVICE/DOCSERVICE/g" kubernetes-manifests.yaml'
-	            sh 'cat kubernetes-manifests.yaml'
+              sh "sed -i 's+gcr.io/google-samples/microservices-demo/emailservice:*+${IMAGE_NAME}:adservice-${RELEASE}+g' kubernetes-manifests.yaml"
+	            sh "cat kubernetes-manifests.yaml"
 	          }
           }
         }
