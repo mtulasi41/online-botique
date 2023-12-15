@@ -262,13 +262,17 @@ pipeline {
       steps {
         script {
           dir('online-botique/release') {
+            withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'vaultCred', vaultUrl: 'http://43.205.96.118:8200'], vaultSecrets: [[path: 'botique/github', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
+            
               sh "git config --global user.email 'mtulasi41@gmail.com'"
               sh "git config --global user.name 'mtulasi41'"
-              sh 'git remote set-url origin https://$GIT_CRED@github.com/mtulasi41/online-botique'
-              sh 'git checkout feature'
+              //sh 'git remote set-url origin https://$GIT_CRED@github.com/mtulasi41/online-botique'
+              //sh 'git checkout feature'
               sh 'git add -A'
               sh 'git commit -am "updated manifest file"'
-              sh 'git push origin feature'
+              //sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/K8s-Manifests.git HEAD:main" 
+              sh "git push https://${username}:${password}@github.com/${username}/online-botique.git HEAD:feature" 
+              
               
             }
           }
