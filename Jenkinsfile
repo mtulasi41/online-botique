@@ -272,8 +272,7 @@ pipeline {
               sh 'git commit -am "updated manifest file"'
               //sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/K8s-Manifests.git HEAD:main" 
               sh "git push https://${username}:${password}@github.com/${username}/online-botique.git HEAD:feature" 
-              
-              
+              }              
             }
           }
         }
