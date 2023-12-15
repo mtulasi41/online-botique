@@ -9,9 +9,7 @@ pipeline {
             IMAGE_NAME = "${IMAGE_REPO}" + "/" + "${NAME}"
             SCANDATE = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
             TEMPLATE_LOC = "/usr/local/share/trivy/templates/html.tpl"
-            EMAILSERVICE = "image: gcr.io/google-samples/microservices-demo/emailservice:v0.8.1"
-            DOCSERVICE = "image: ${IMAGE_NAME}:emailservice-${RELEASE}"
-    }
+       }
 
     stages {
         stage('Checkout') {
