@@ -265,7 +265,7 @@ pipeline {
               sh "git config --global user.email 'mtulasi41@gmail.com'"
               sh 'git add -A'
               sh 'git commit -am "updated manifest file"'
-              sh 'git push origin feature'
+              sh 'git push https://github.com/mtulasi41/online-botique.git HEAD:feature'
             }
           }
         }
