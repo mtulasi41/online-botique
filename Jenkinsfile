@@ -239,5 +239,23 @@ pipeline {
           }
         }
      }
+    stage('commit and push'){
+      environment {
+            GIT_REPO_NAME = "online-botique"
+            GIT_USER_NAME = "mtulasi41"
+        }
+      
+      steps {
+        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+            sh '''
+                    git config user.email "mtulasi41@gmail.com"
+                    git config user.name "mtulasi41"
+                    git add release/kubernetes-manifests.yaml
+                    git commit -m "Update deployment image "
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+         }
+      }
+    }          
  }
 }
