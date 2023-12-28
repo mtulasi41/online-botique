@@ -252,7 +252,7 @@ pipeline {
                     git config user.name "mtulasi41"
                     git add release/kubernetes-manifests.yaml
                     git commit -m "Update deployment image "
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:feature
                 '''
          }
       }
