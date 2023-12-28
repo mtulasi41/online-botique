@@ -217,7 +217,7 @@ pipeline {
     stage('Update Manifest') {
        steps {
           script {
-	          dir('online-botique/release') {
+	          dir('release') {
               
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/emailservice:v0.8.1+${IMAGE_NAME}:emailservice-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.1+${IMAGE_NAME}:checkoutservice-${RELEASE}+g' kubernetes-manifests.yaml"
