@@ -9,7 +9,6 @@ pipeline {
             IMAGE_NAME = "${IMAGE_REPO}" + "/" + "${NAME}"
             SCANDATE = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
             TEMPLATE_LOC = "/usr/local/share/trivy/templates/html.tpl"
-            GIT_CRED = credentials('Git_Token')
        }
 
     stages {
