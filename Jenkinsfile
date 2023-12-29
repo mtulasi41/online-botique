@@ -20,7 +20,7 @@ pipeline {
       
         stage('DockerLogin') {
             steps {
-               withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'VaultCred', vaultUrl: 'http://43.205.211.174:8200'], vaultSecrets: [[path: 'online-botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
+                 withVault(configuration: [disableChildPoliciesOverride: false, timeout: 60, vaultCredentialId: 'VaultCred', vaultUrl: 'http://13.233.207.33:8200'], vaultSecrets: [[path: 'online-botique/dockerhub', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
 			            sh 'docker login -u $username -p $password'
 
 		            }
@@ -222,7 +222,7 @@ pipeline {
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/emailservice:v0.8.1+${IMAGE_NAME}:emailservice-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.1+${IMAGE_NAME}:checkoutservice-${RELEASE}+g' kubernetes-manifests.yaml"
               
-              sh "sed -i 's+gcr.io/google-samples/microservices-demo/frontend:v0.8.1+${IMAGE_NAME}:frotend-${RELEASE}+g' kubernetes-manifests.yaml"
+              sh "sed -i 's+gcr.io/google-samples/microservices-demo/frontend:v0.8.1+${IMAGE_NAME}:frontend-${RELEASE}+g' kubernetes-manifests.yaml"
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/paymentservice:v0.8.1+${IMAGE_NAME}:paymentservice-${RELEASE}+g' kubernetes-manifests.yaml"
               
               sh "sed -i 's+gcr.io/google-samples/microservices-demo/productcatalogservice:v0.8.1+${IMAGE_NAME}:productcatalogservice-${RELEASE}+g' kubernetes-manifests.yaml"
