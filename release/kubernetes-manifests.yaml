@@ -70,6 +70,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -143,6 +145,8 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+        imagePullSecrets:
+        - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -211,6 +215,8 @@ spec:
           limits:
             cpu: 200m
             memory: 450Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -255,7 +261,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: chtulasi/online-botique:frotend-v0.1.0
+          image: chtulasi/online-botique:frontend-v0.1.0
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -308,6 +314,8 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+        imagePullSecrets:
+        - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -385,6 +393,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -449,6 +459,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -514,6 +526,8 @@ spec:
           periodSeconds: 10
           grpc:
             port: 7070
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -597,6 +611,8 @@ spec:
           limits:
             cpu: 500m
             memory: 512Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -649,6 +665,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -713,6 +731,8 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
@@ -844,6 +864,8 @@ spec:
           periodSeconds: 15
           grpc:
             port: 9555
+      imagePullSecrets:
+      - name: secret-docker
 ---
 apiVersion: v1
 kind: Service
